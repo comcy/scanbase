@@ -1,6 +1,58 @@
 {
   "version": 1,
   "projects": {
+    "mock-api": {
+      "root": "apps/mock-api",
+      "sourceRoot": "apps/mock-api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/mock-api",
+            "main": "apps/mock-api/src/main.ts",
+            "tsConfig": "apps/mock-api/tsconfig.app.json",
+            "assets": ["apps/mock-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/mock-api/src/environments/environment.ts",
+                  "with": "apps/mock-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "mock-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/mock-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/mock-api"],
+          "options": {
+            "jestConfig": "apps/mock-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "scanbase-portal": {
       "projectType": "application",
       "root": "apps/scanbase-portal",
